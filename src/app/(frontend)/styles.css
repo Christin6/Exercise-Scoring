@@ -115,31 +115,7 @@ svg {
       text-align: center;
     }
   }
-
-  .links {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    a {
-      text-decoration: none;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-    }
-
-    .admin {
-      color: rgb(0, 0, 0);
-      background: rgb(1000, 1000, 1000);
-      border: 1px solid rgb(0, 0, 0);
-    }
-
-    .docs {
-      color: rgb(1000, 1000, 1000);
-      background: rgb(0, 0, 0);
-      border: 1px solid rgb(1000, 1000, 1000);
-    }
-  }
-
+  
   .footer {
     display: flex;
     align-items: center;
@@ -153,12 +129,34 @@ svg {
     p {
       margin: 0;
     }
+  }
 
-    .codeLink {
-      text-decoration: none;
-      padding: 0 0.5rem;
-      background: rgb(60, 60, 60);
+  form.upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    label {
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    input[type="file"] {
+      margin-bottom: 1rem;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      background-color: #ffffff;
+      color: #000000;
+      border: none;
       border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #d8d8d8;
+      }
     }
   }
 }
