@@ -3,10 +3,12 @@
 import React from 'react'
 
 export const UploadForm = () => {
-  const [file, setFile] = React.useState<File | null>(null)
+  const inputRef = React.useRef<HTMLInputElement>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const file = inputRef.current?.files?.[0]
+
     if (!file) return
 
     const formData = new FormData()
@@ -18,19 +20,17 @@ export const UploadForm = () => {
     })
 
     const { url } = await res.json()
+
+    // clear the file after upload
+    if (inputRef.current) inputRef.current.value = ''
+
     // pass url to do something with it
   }
 
   return (
     <form className="upload" onSubmit={handleSubmit}>
       <label htmlFor="file">Upload File</label>
-      <input
-        type="file"
-        name="file"
-        id="file"
-        accept=".pdf"
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-      />
+      <input ref={inputRef} type="file" name="file" id="file" accept=".pdf" />
       <button type="submit">Submit</button>
     </form>
   )
