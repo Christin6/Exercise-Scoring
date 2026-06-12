@@ -3,35 +3,45 @@
 import React from 'react'
 
 export const UploadForm = () => {
-  const inputRef = React.useRef<HTMLInputElement>(null)
+  const [file, setFile] = React.useState<File | null>(null)
+  const [inputKey, setInputKey] = React.useState(0)
+  const [statusText, setStatusText] = React.useState('No file selected')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const file = inputRef.current?.files?.[0]
-
     if (!file) return
 
+    const currentFile = file // capture before clearing
+    setFile(null)
+    setInputKey((k) => k + 1) // clear immediately
+
     const formData = new FormData()
-    formData.append('file', file)
+    formData.append('file', currentFile)
 
-    const res = await fetch('/api/upload', {
-      method: 'POST',
-      body: formData,
-    })
-
+    setStatusText('Uploading...')
+    const res = await fetch('/api/upload', { method: 'POST', body: formData })
     const { url } = await res.json()
+    setStatusText('File uploaded successfully!')
 
-    // clear the file after upload
-    if (inputRef.current) inputRef.current.value = ''
-
-    // pass url to do something with it
+    // use url here
   }
 
   return (
     <form className="upload" onSubmit={handleSubmit}>
       <label htmlFor="file">Upload File</label>
-      <input ref={inputRef} type="file" name="file" id="file" accept=".pdf" />
+      <input
+        key={inputKey}
+        type="file"
+        name="file"
+        id="file"
+        accept=".pdf"
+        onChange={(e) => {
+          setFile(e.target.files?.[0] || null)
+          setStatusText('File selected')
+        }}
+      />
       <button type="submit">Submit</button>
+      <p>{statusText}</p>
     </form>
   )
 }
