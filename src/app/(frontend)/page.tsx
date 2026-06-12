@@ -1,30 +1,23 @@
 import { headers as getHeaders } from 'next/headers.js'
-import Image from 'next/image'
-import { getPayload } from 'payload'
 import React from 'react'
-import { fileURLToPath } from 'url'
+import { UploadForm } from './components/UploadForm'
 
-import config from '@/payload.config'
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
 import './styles.css'
 
 export default async function HomePage() {
   const headers = await getHeaders()
-  const payloadConfig = await config
+  const payloadConfig = await configPromise
   const payload = await getPayload({ config: payloadConfig })
   const { user } = await payload.auth({ headers })
-
-  const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
 
   return (
     <div className="home">
       <div className="content">
         {!user && <h1>Welcome to [].</h1>}
         {user && <h1>Welcome back, {user.email}</h1>}
-        <form className="upload">
-          <label htmlFor="file">Upload File</label>
-          <input type="file" name="file" id="file" accept=".pdf" />
-          <button>Submit</button>
-        </form>
+        <UploadForm />
       </div>
     </div>
   )
