@@ -11,9 +11,6 @@ export const UploadForm = () => {
   const [uploadedUrl, setUploadedUrl] = useState('')
   const [aiResponse, setAiResponse] = useState('')
 
-  const exampleUrl =
-    'https://jjchnrscwthvzuzswgfr.supabase.co/storage/v1/object/public/uploads/example.pdf'
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!file) return
@@ -32,7 +29,7 @@ export const UploadForm = () => {
       const res = await fetch('/api/upload-file-to-db', { method: 'POST', body: formData })
       if (!res.ok) throw new Error('Upload failed')
       const { url } = await res.json()
-      setUploadedUrl(exampleUrl)
+      setUploadedUrl(url)
       setStatusText('File uploaded successfully!')
     } catch {
       setStatusText('Upload failed. Try again.')
