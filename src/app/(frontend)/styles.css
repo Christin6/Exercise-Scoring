@@ -46,6 +46,8 @@ h1 {
   line-height: 70px;
   font-weight: bold;
 
+  text-align: center;
+
   @media (max-width: 1024px) {
     margin: 24px 0;
     font-size: 42px;
@@ -89,6 +91,14 @@ svg {
   vertical-align: middle;
 }
 
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
 .home {
   display: flex;
   flex-direction: column;
@@ -102,18 +112,6 @@ svg {
 
   @media (max-width: 400px) {
     padding: 24px;
-  }
-
-  .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1;
-
-    h1 {
-      text-align: center;
-    }
   }
 
   .footer {

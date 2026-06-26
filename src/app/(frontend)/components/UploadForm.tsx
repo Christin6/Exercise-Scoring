@@ -1,15 +1,19 @@
 'use client'
 
 import { useState, FormEvent } from 'react'
+import { useAnalysisStore } from '../store/analysisStore'
+import { useRouter } from 'next/navigation'
 
 export const UploadForm = () => {
+  const router = useRouter()
+
+  const { fileUrl, isAnalyzing, analysis, setFileUrl, setAnalysis, setIsAnalyzing } =
+    useAnalysisStore()
+
   const [file, setFile] = useState<File | null>(null)
   const [inputKey, setInputKey] = useState(0)
   const [statusText, setStatusText] = useState('No file selected')
   const [isUploading, setIsUploading] = useState(false)
-  const [isAnalyzing, setIsAnalyzing] = useState(false)
-  const [uploadedUrl, setUploadedUrl] = useState('')
-  const [aiResponse, setAiResponse] = useState('')
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -29,7 +33,7 @@ export const UploadForm = () => {
       const res = await fetch('/api/upload-file-to-db', { method: 'POST', body: formData })
       if (!res.ok) throw new Error('Upload failed')
       const { url } = await res.json()
-      setUploadedUrl(url)
+      setFileUrl(url)
       setStatusText('File uploaded successfully!')
     } catch {
       setStatusText('Upload failed. Try again.')
@@ -39,19 +43,21 @@ export const UploadForm = () => {
   }
 
   const handleAnalyze = async () => {
+    setStatusText('Analyzing file...')
+    setIsAnalyzing(true)
     try {
-      setStatusText('Analyzing file...')
-
       const res = await fetch('/api/analyze-file', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fileUrl: uploadedUrl }),
+        body: JSON.stringify({ fileUrl }),
       })
-
       const data = await res.json()
-      setAiResponse(data)
+      setAnalysis(data)
+      router.push('/analysis')
     } catch (err) {
       setStatusText('File analysis failed')
+    } finally {
+      setIsAnalyzing(false)
     }
   }
 
@@ -72,15 +78,12 @@ export const UploadForm = () => {
           }}
         />
         <button type="submit" disabled={!file || isUploading}>
-          Save File
+          Upload File
         </button>
       </form>
-
-      <button onClick={handleAnalyze} disabled={!uploadedUrl || isAnalyzing}>
+      <button onClick={handleAnalyze} disabled={!fileUrl || isAnalyzing}>
         Analyze with AI
       </button>
-
-      <div>{aiResponse}</div>
     </>
   )
 }

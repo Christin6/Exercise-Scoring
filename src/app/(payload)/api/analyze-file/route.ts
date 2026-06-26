@@ -47,8 +47,9 @@ const analyze = async (base64PDF: string) => {
       },
     ],
   })
-
-  return interaction.output_text
+  const text = interaction.output_text ?? ''
+  const clean = text.replace(/```json|```/g, '').trim()
+  return JSON.parse(clean)
 }
 
 export const POST = async (req: NextRequest) => {
