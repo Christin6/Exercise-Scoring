@@ -1,5 +1,4 @@
 import { headers as getHeaders } from 'next/headers.js'
-import React from 'react'
 import { UploadForm } from './components/UploadForm'
 
 import { getPayload } from 'payload'
