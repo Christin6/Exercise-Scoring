@@ -37,7 +37,7 @@ Respond ONLY in this JSON format, no markdown, no preamble:
 
 const analyze = async (base64PDF: string) => {
   const interaction = await ai.interactions.create({
-    model: 'gemini-3.5-flash',
+    model: 'gemini-2.5-flash',
     input: [
       { type: 'text', text: PROMPT },
       {
