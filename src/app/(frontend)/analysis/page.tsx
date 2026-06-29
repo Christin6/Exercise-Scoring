@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 export default function AnalysisPage() {
-  const { analysis } = useAnalysisStore()
+  const { analysis, setIsAnalyzing } = useAnalysisStore()
   const router = useRouter()
 
   // Guard — if user lands here without data, send them back
@@ -71,7 +71,13 @@ export default function AnalysisPage() {
         </section>
 
         <div className="analysis-actions">
-          <button type="button" onClick={() => router.push('/')}>
+          <button
+            type="button"
+            onClick={() => {
+              router.push('/')
+              setIsAnalyzing(false)
+            }}
+          >
             Analyze another file
           </button>
         </div>

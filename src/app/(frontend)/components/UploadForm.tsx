@@ -7,8 +7,7 @@ import { useRouter } from 'next/navigation'
 export const UploadForm = () => {
   const router = useRouter()
 
-  const { fileUrl, isAnalyzing, analysis, setFileUrl, setAnalysis, setIsAnalyzing } =
-    useAnalysisStore()
+  const { fileUrl, isAnalyzing, setFileUrl, setAnalysis, setIsAnalyzing } = useAnalysisStore()
 
   const [file, setFile] = useState<File | null>(null)
   const [inputKey, setInputKey] = useState(0)
